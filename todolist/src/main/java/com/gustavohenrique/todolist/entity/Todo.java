@@ -1,6 +1,7 @@
 package com.gustavohenrique.todolist.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;
 
@@ -10,10 +11,31 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @NotBlank
     private String nome;
+    @NotBlank
     private String descricao;
     private boolean realizado;
     private int prioridade;
+
+    public Todo() {
+
+    }
+
+    public Todo(UUID id, @NotBlank String nome, @NotBlank String descricao, boolean realizado, int prioridade) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.realizado = realizado;
+        this.prioridade = prioridade;
+    }
+
+    public Todo(String nome, String descricao, boolean realizado, int prioridade) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.realizado = realizado;
+        this.prioridade = prioridade;
+    }
 
     public UUID getId() {
         return id;

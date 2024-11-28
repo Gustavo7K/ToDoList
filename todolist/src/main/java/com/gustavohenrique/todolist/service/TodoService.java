@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -14,7 +15,7 @@ public class TodoService{
     /* Pensando em aprimorar o uso da lista de tarefas, após cada operação
     a aplicação irá retornar a lista completa */
 
-    private TodoRepository todoRepository; //injeção de dependencias
+    private final TodoRepository todoRepository; //injeção de dependencias
 
     public TodoService(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
@@ -32,7 +33,15 @@ public class TodoService{
         return todoRepository.findAll(sort);
     }
 
-    public List<Todo> update(Todo todo){
+    /* TODO: 28/11/2024
+    public List<Todo> searchById(UUID id){
+        Optional<Todo> todoO = todoRepository.findById(id);
+        return list();
+    }*/
+
+    public List<Todo> update(UUID id, Todo todo){
+        Optional<Todo> todoO = todoRepository.findById(id);
+        todo.setId(id);
         todoRepository.save(todo);
         return list();
     }
