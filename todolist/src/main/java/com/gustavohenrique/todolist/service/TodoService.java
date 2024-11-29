@@ -33,11 +33,13 @@ public class TodoService{
         return todoRepository.findAll(sort);
     }
 
-    /* TODO: 28/11/2024
-    public List<Todo> searchById(UUID id){
-        Optional<Todo> todoO = todoRepository.findById(id);
-        return list();
-    }*/
+    public Optional<Todo> searchById(UUID id){
+        return todoRepository.findById(id);
+    }
+
+    public List<Todo> searchByRealizado(){
+        return todoRepository.findByRealizado(true);
+    }
 
     public List<Todo> update(UUID id, Todo todo){
         Optional<Todo> todoO = todoRepository.findById(id);

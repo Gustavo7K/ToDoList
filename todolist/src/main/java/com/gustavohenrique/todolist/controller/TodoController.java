@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -28,16 +29,30 @@ public class TodoController {
         return todoService.list();
     }
 
-    /* TODO: 28/11/2024
     @GetMapping("{id}")
-    List<Todo> searchById(@PathVariable UUID id) {
-        return todoService.searchById(id);
-    }*/
+    ResponseEntity<Todo> searchById(@PathVariable UUID id) {
+        Optional<Todo> todoSearchById = todoService.searchById(id);
+        if (todoSearchById.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            //Caso o Optional não encontrar a tarefa para o ID fornecido,
+            // é retornada uma resposta com o status HTTP 404 (Not Found).
+        } else {
+            return new ResponseEntity<>(todoSearchById.get(), HttpStatus.OK);
+            //a tarefa será retornada no corpo da resposta com o status HTTP 200 (OK).
+        }
+    }
 
-    /*@GetMapping("/todos/{realizado}")
-    List<Todo> list(@PathVariable("true") boolean realizado) {
-        return todoService.list();
-    }*/
+    @GetMapping("/realizadas")
+    ResponseEntity<List<Todo>> searchByBoolean() {
+        List<Todo> todoSearchByBoolean = todoService.searchByRealizado();
+        if(todoSearchByBoolean.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            //NO_CONTENT Indica que a requisição foi bem-sucedida,
+            // mas não há nenhum dado no corpo da resposta.
+        } else {
+            return new ResponseEntity<>(todoSearchByBoolean,HttpStatus.OK);
+        }
+    }
 
     @PutMapping("{id}")
     List<Todo> update(@PathVariable UUID id,
