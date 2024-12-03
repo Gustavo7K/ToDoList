@@ -61,7 +61,12 @@ public class TodoController {
     }
 
     @DeleteMapping("{id}")
-    List<Todo> delete(@PathVariable(value = "id") UUID id) {
-        return todoService.delete(id);
+    ResponseEntity<Todo> delete(@PathVariable UUID id) {
+        Optional<Todo> todoDelete = todoService.delete(id);
+        if(todoDelete.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 }

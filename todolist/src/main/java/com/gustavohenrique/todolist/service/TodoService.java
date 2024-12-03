@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Service
 public class TodoService{
-    /* Pensando em aprimorar o uso da lista de tarefas, após cada operação
+    /* Pensando em aprimorar o uso da lista de tarefas, após algumas operações especificas
     a aplicação irá retornar a lista completa */
 
     private final TodoRepository todoRepository; //injeção de dependencias
@@ -26,9 +26,10 @@ public class TodoService{
         return list();
     }
 
+    // TODO: 02/12/2024 arrumar ordenação
     public List<Todo> list(){
         Sort sort = Sort.by("prioridade").descending().and( //ordenação por prioridade
-                Sort.by("nome").ascending() //ordenação por nome
+                Sort.by("id").ascending() //ordenação por id
         );
         return todoRepository.findAll(sort);
     }
@@ -48,8 +49,11 @@ public class TodoService{
         return list();
     }
 
-    public List<Todo> delete(UUID id){
-        todoRepository.deleteById(id);
-        return list();
+    public Optional<Todo> delete(UUID id){
+        Optional<Todo> todoDelete = todoRepository.findById(id);
+        if (todoDelete.isPresent()){
+            //Se o recurso for encontrado (isPresent()), ele será excluído com deleteById(id)
+            todoRepository.deleteById(id);
+        } return todoDelete;
     }
 }
