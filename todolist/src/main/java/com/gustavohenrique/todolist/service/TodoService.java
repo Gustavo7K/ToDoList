@@ -29,7 +29,7 @@ public class TodoService{
     // TODO: 02/12/2024 arrumar ordenação
     public List<Todo> list(){
         Sort sort = Sort.by("prioridade").descending().and( //ordenação por prioridade
-                Sort.by("id").ascending() //ordenação por id
+                Sort.by("realizado").ascending() //ordenação por tarefas feitas e nao feitas
         );
         return todoRepository.findAll(sort);
     }
@@ -42,11 +42,20 @@ public class TodoService{
         return todoRepository.findByRealizado(true);
     }
 
-    public List<Todo> update(UUID id, Todo todo){
-        Optional<Todo> todoO = todoRepository.findById(id);
-        todo.setId(id);
-        todoRepository.save(todo);
-        return list();
+    public Optional<Todo> update(UUID id, Todo todo){
+        Optional<Todo> todoUpdate = todoRepository.findById(id);
+
+        if (todoUpdate.isPresent()){
+        Todo todoToUpdate = todoUpdate.get();
+        todoToUpdate.setId(id);
+        todoToUpdate.setNome(todo.getNome());
+        todoToUpdate.setDescricao(todo.getDescricao());
+        todoToUpdate.setPrioridade(todo.getPrioridade());
+        todoToUpdate.setRealizado(todo.isRealizado());
+        todoRepository.save(todoToUpdate);
+            return Optional.of(todoToUpdate); // Retorna o recurso atualizado
+        }
+        return Optional.empty(); // Retorna vazio caso o recurso não seja encontrado
     }
 
     public Optional<Todo> delete(UUID id){
@@ -54,6 +63,6 @@ public class TodoService{
         if (todoDelete.isPresent()){
             //Se o recurso for encontrado (isPresent()), ele será excluído com deleteById(id)
             todoRepository.deleteById(id);
-        } return todoDelete;
+        } return todoDelete; // TODO: 04/12/2024 verificar retorno com optional.empty
     }
 }

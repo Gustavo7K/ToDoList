@@ -55,18 +55,25 @@ public class TodoController {
     }
 
     @PutMapping("{id}")
-    List<Todo> update(@PathVariable UUID id,
+    ResponseEntity<List<Todo>> update(@PathVariable UUID id,
                       @RequestBody @Valid Todo todo) {
-        return todoService.update(id, todo);
+        Optional<Todo> todoUpdate = todoService.update(id, todo);
+        if (todoUpdate.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            List<Todo> todos = todoService.list();
+            return new ResponseEntity<>(todos, HttpStatus.OK);
+        }
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Todo> delete(@PathVariable UUID id) {
+    ResponseEntity<List<Todo>> delete(@PathVariable UUID id) {
         Optional<Todo> todoDelete = todoService.delete(id);
         if(todoDelete.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
-            return new ResponseEntity<>(HttpStatus.OK);
+            List<Todo> todos = todoService.list();
+            return new ResponseEntity<>(todos, HttpStatus.OK);
         }
     }
 }
