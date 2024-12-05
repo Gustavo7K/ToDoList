@@ -28,8 +28,10 @@ public class TodoService{
 
     // TODO: 02/12/2024 arrumar ordenação
     public List<Todo> list(){
-        Sort sort = Sort.by("prioridade").descending().and( //ordenação por prioridade
-                Sort.by("realizado").ascending() //ordenação por tarefas feitas e nao feitas
+        //ordenação por prioridade (3 maior prioridade e 1 menor prioridade) .and
+        //ordenação por tarefas não realizadas e realizadas
+        Sort sort = Sort.by("prioridade").descending().and(
+                Sort.by("realizado").ascending()
         );
         return todoRepository.findAll(sort);
     }

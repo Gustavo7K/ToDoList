@@ -25,8 +25,9 @@ public class TodoController {
     }
 
     @GetMapping
-    List<Todo> list() {
-        return todoService.list();
+    ResponseEntity<List<Todo>> list() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(todoService.list());
     }
 
     @GetMapping("{id}")
