@@ -65,6 +65,6 @@ public class TodoService{
         if (todoDelete.isPresent()){
             //Se o recurso for encontrado (isPresent()), ele será excluído com deleteById(id)
             todoRepository.deleteById(id);
-        } return todoDelete; // TODO: 04/12/2024 verificar retorno com optional.empty
+        } return todoDelete;
     }
 }
