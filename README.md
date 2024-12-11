@@ -93,4 +93,4 @@ DELETE http://localhost:8080/todos/da9c4cb1-b315-4ed9-9afb-0ab74d8c8a43
 ```
 ## Pensando sobre a API
 Como um adicional deixo algumas anotações do que eu pensei e aprendi antes, durante e depois de construir essa API.
-![img.png](img.png)
+![img.png](todolist/img.png)
