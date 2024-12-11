@@ -26,7 +26,6 @@ public class TodoService{
         return list();
     }
 
-    // TODO: 02/12/2024 arrumar ordenação
     public List<Todo> list(){
         //ordenação por prioridade (3 maior prioridade e 1 menor prioridade) .and
         //ordenação por tarefas não realizadas e realizadas
